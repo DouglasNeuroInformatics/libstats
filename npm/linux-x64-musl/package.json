@@ -7,13 +7,13 @@
   "cpu": [
     "x64"
   ],
-  "main": "libstats.linux-x64-musl.node",
+  "license": "Apache-2.0",
+  "main": "index.node",
   "files": [
-    "libstats.linux-x64-musl.node"
+    "index.node"
   ],
-  "license": "MIT",
   "engines": {
-    "node": ">= 10"
+    "node": ">= 20"
   },
   "libc": [
     "musl"

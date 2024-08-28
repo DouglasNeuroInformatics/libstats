@@ -7,12 +7,12 @@
   "cpu": [
     "x64"
   ],
-  "main": "libstats.darwin-x64.node",
+  "license": "Apache-2.0",
+  "main": "index.node",
   "files": [
-    "libstats.darwin-x64.node"
+    "index.node"
   ],
-  "license": "MIT",
   "engines": {
-    "node": ">= 10"
+    "node": ">= 20"
   }
 }
