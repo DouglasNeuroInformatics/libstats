@@ -8,14 +8,39 @@ importers:
 
   .:
     devDependencies:
+      '@douglasneuroinformatics/prettier-config':
+        specifier: ^0.0.1
+        version: 0.0.1(prettier@3.3.3)
       '@napi-rs/cli':
         specifier: ^2.18.4
         version: 2.18.4
       ava:
         specifier: ^6.0.1
         version: 6.1.3
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
 
 packages:
+
+  '@douglasneuroinformatics/prettier-config@0.0.1':
+    resolution: {integrity: sha512-Cml8ilNKjJOMp50lR5isEfc9QkGGgf8PoF9Fk73CmYGGMS8TUmhA59++Zia/12rJ2fkpKFhfI8uA3VTEnv+qKw==}
+    hasBin: true
+    peerDependencies:
+      husky: 9.x
+      prettier: 3.x
+      prettier-plugin-astro: 0.x
+      prettier-plugin-svelte: 3.x
+      prettier-plugin-tailwindcss: 0.x
+    peerDependenciesMeta:
+      husky:
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      prettier-plugin-tailwindcss:
+        optional: true
 
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
@@ -523,6 +548,11 @@ packages:
     resolution: {integrity: sha512-VP/72JeXqak2KiOzjgKtQen5y3IZHn+9GOuLDafPv0eXa47xq0At93XahYBs26MsifCQ4enGKwbjBTKgb9QJXg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  prettier@3.3.3:
+    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   pretty-ms@9.1.0:
     resolution: {integrity: sha512-o1piW0n3tgKIKCwk2vpM/vOV13zjJzvP37Ioze54YlTHE06m4tjEbzg9WsKkvTuyYln2DHjo5pY4qrZGI0otpw==}
     engines: {node: '>=18'}
@@ -692,6 +722,10 @@ packages:
     engines: {node: '>=12'}
 
 snapshots:
+
+  '@douglasneuroinformatics/prettier-config@0.0.1(prettier@3.3.3)':
+    dependencies:
+      prettier: 3.3.3
 
   '@mapbox/node-pre-gyp@1.0.11':
     dependencies:
@@ -1167,6 +1201,8 @@ snapshots:
   plur@5.1.0:
     dependencies:
       irregular-plurals: 3.5.0
+
+  prettier@3.3.3: {}
 
   pretty-ms@9.1.0:
     dependencies:
