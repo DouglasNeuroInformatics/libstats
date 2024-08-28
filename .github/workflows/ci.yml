@@ -107,9 +107,9 @@ jobs:
           - "lts/iron"
     runs-on: ${{ matrix.settings.host }}
     steps:
+      - uses: actions/checkout@v4
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
-      - uses: actions/checkout@v4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
@@ -139,9 +139,9 @@ jobs:
           - "lts/iron"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
-      - uses: actions/checkout@v4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
@@ -158,7 +158,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine pnpm test
+        run: docker run --rm -v $(pwd):/build -w /build node:${{ matrix.node }}-alpine npm test
   test-linux-aarch64-musl-binding:
     name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
     needs:
@@ -196,7 +196,7 @@ jobs:
           options: "--platform linux/arm64 -v ${{ github.workspace }}:/build -w /build"
           run: |
             set -e
-            pnpm test
+            npm test
   publish:
     name: Publish
     runs-on: ubuntu-latest
