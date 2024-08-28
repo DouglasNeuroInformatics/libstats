@@ -1,46 +1,38 @@
 {
   "name": "@douglasneuroinformatics/libstats",
+  "type": "module",
   "version": "0.0.0",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "napi": {
-    "name": "libstats",
-    "triples": {
-      "defaults": false,
-      "additional": [
-        "aarch64-apple-darwin",
-        "aarch64-unknown-linux-musl",
-        "x86_64-apple-darwin",
-        "x86_64-unknown-linux-musl"
-      ]
+  "packageManager": "pnpm@9.7.0",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.cts",
+      "default": "./lib/index.cjs"
     }
   },
-  "license": "Apache-2.0",
+  "engines": {
+    "node": ">= 20"
+  },
+  "scripts": {
+    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
+    "compile:debug": "pnpm run build --",
+    "compile:release": "pnpm run build -- --release"
+  },
   "devDependencies": {
     "@douglasneuroinformatics/eslint-config": "^5.1.0",
     "@douglasneuroinformatics/prettier-config": "^0.0.1",
-    "@napi-rs/cli": "^2.18.4",
-    "ava": "^6.0.1",
+    "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "cargo-cp-artifact": "^0.1.9",
     "eslint": "^9.9.1",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
   },
-  "ava": {
-    "timeout": "3m"
-  },
-  "engines": {
-    "node": ">= 10"
-  },
-  "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
-    "build:debug": "napi build --platform",
-    "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava",
-    "universal": "napi universal",
-    "version": "napi version"
-  },
-  "packageManager": "pnpm@9.7.0",
   "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "9.x"
+      }
+    },
     "supportedArchitectures": {
       "os": [
         "darwin",
