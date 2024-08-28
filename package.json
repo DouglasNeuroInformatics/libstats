@@ -14,9 +14,7 @@
     "node": ">= 20"
   },
   "scripts": {
-    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
-    "compile:debug": "pnpm run build --",
-    "compile:release": "pnpm run build -- --release"
+    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics"
   },
   "devDependencies": {
     "@douglasneuroinformatics/eslint-config": "^5.1.0",

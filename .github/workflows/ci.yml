@@ -28,10 +28,7 @@ jobs:
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: |-
-              set -e &&
-              rustup target add aarch64-unknown-linux-musl &&
-              pnpm build --target aarch64-unknown-linux-musl
+            build: set -e && rustup target add aarch64-unknown-linux-musl && pnpm build --target aarch64-unknown-linux-musl
     name: ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -81,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: dist
           if-no-files-found: error
   # test-macos-binding:
   #   name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
