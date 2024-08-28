@@ -5,7 +5,7 @@
   </a>
   <h3 align="center">@douglasneuroinformatics/libstats</h3>
   <p align="center">
-    Basic statistics in Node.js, written in Rust
+    Basic statistics for Node.js, written in Rust
   </p>
 </div>
 
