@@ -24,11 +24,12 @@
     "@douglasneuroinformatics/prettier-config": "^0.0.1",
     "@douglasneuroinformatics/semantic-release": "^0.0.1",
     "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "@types/node": "20.x",
     "cargo-cp-artifact": "^0.1.9",
     "eslint": "^9.9.1",
     "husky": "^9.0.11",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.4"
+    "typescript": "~5.5.4"
   },
   "commitlint": {
     "extends": [
