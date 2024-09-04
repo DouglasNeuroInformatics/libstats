@@ -18,8 +18,7 @@ jobs:
       - id: define
         run: |
           echo "PACKAGE_NAME=$(cat package.json | jq -r .name | xargs basename)" | sudo tee -a "$GITHUB_OUTPUT"
-          echo "RELEASE_TAG=v0.0.2 | sudo tee -a "$GITHUB_OUTPUT"
-        # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "RELEASE_TAG=v0.0.2" | sudo tee -a "$GITHUB_OUTPUT"
   verify:
     runs-on: ubuntu-22.04
     needs: [configure]
@@ -29,6 +28,7 @@ jobs:
         env:
           RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
   # build:
+  # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
   #   needs: [configure]
   #   permissions:
   #     contents: write
