@@ -79,8 +79,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: $TARGET_PACKAGE
-          path: $TARGET_PACKAGE.tar.gz
+          name: ${{ env.TARGET_PACKAGE }}
+          path: ${{ env.TARGET_PACKAGE }}.tar.gz
           if-no-files-found: 'error'
   # publish-release:
   #   permissions:
