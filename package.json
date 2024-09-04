@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "packageManager": "pnpm@9.7.0",
+  "description": "Basic statistics for Node.js, written in Rust",
   "license": "Apache-2.0",
   "exports": {
     ".": {
