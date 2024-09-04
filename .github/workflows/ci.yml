@@ -47,6 +47,8 @@ jobs:
             target: 'x86_64-apple-darwin'
           - os: 'macos-latest'
             target: 'aarch64-apple-darwin'
+    env:
+      TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -70,14 +72,15 @@ jobs:
         uses: swatinem/rust-cache@v2
       - name: Compile Binary
         run: pnpm build --release --target ${{ matrix.platform.target }}
-      - name: 'Tar Binary'
-        run: |
-          tar -czvf ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz ./dist/index.node
+      - name: Copy Binary
+        run: cp ./dist/index.node ./npm/$TARGET_PACKAGE/index.node
+      - name: 'Archive Package'
+        run: tar -C npm -czvf $TARGET_PACKAGE.tar.gz $TARGET_PACKAGE
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
-          path: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz
+          name: $TARGET_PACKAGE
+          path: $TARGET_PACKAGE.tar.gz
           if-no-files-found: 'error'
   # publish-release:
   #   permissions:
