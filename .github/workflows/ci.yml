@@ -23,7 +23,9 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [configure]
     steps:
-      - name: verify version
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Verify Version
         run: |
           ls -la $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE/..
@@ -51,8 +53,8 @@ jobs:
   #           target: 'aarch64-apple-darwin'
   #   runs-on: ${{ matrix.platform.os }}
   #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
+  # - name: Checkout Repository
+  #   uses: actions/checkout@v4
   #     - name: Setup pnpm
   #       uses: pnpm/action-setup@v3
   #     - name: Setup node
