@@ -6,7 +6,7 @@ release_version=${1:-}
 if [ -z $release_version ]; then
   echo "ERROR: Usage: \$0 <version>" >&2
   exit 1
-elif [[ ! $release_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+elif [[ ! $release_version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-alpha.[0-9]+)?$ ]]; then
   echo "ERROR: Invalid format of release version \"$release_version\"" >&2
   exit 1
 fi

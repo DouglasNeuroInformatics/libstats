@@ -1,6 +1,6 @@
 {
   "name": "@douglasneuroinformatics/libstats-x86_64-apple-darwin",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "os": [
     "darwin"
   ],
