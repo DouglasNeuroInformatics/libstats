@@ -1,11 +1,11 @@
 {
-  "name": "@douglasneuroinformatics/libstats-darwin-arm64",
+  "name": "@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl",
   "version": "0.0.0",
   "os": [
-    "darwin"
+    "linux"
   ],
   "cpu": [
-    "arm64"
+    "x64"
   ],
   "license": "Apache-2.0",
   "main": "index.node",
@@ -14,5 +14,8 @@
   ],
   "engines": {
     "node": ">= 20"
-  }
+  },
+  "libc": [
+    "musl"
+  ]
 }

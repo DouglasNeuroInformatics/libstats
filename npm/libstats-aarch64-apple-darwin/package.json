@@ -1,11 +1,11 @@
 {
-  "name": "@douglasneuroinformatics/libstats-darwin-x64",
+  "name": "@douglasneuroinformatics/libstats-aarch64-apple-darwin",
   "version": "0.0.0",
   "os": [
     "darwin"
   ],
   "cpu": [
-    "x64"
+    "arm64"
   ],
   "license": "Apache-2.0",
   "main": "index.node",
