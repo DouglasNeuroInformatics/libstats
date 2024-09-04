@@ -24,7 +24,10 @@ jobs:
     needs: [configure]
     steps:
       - name: verify version
-        run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
+        run: |
+          ls $GITHUB_WORKSPACE
+
+          bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
         env:
           RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
   # build:
