@@ -19,6 +19,7 @@ jobs:
         run: |
           echo "PACKAGE_NAME=$(cat package.json | jq -r .name | xargs basename)" | sudo tee -a "$GITHUB_OUTPUT"
           echo "RELEASE_TAG=v0.0.2" | sudo tee -a "$GITHUB_OUTPUT"
+  # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
   verify:
     runs-on: ubuntu-22.04
     needs: [configure]
@@ -26,64 +27,58 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Verify Version
-        run: |
-          ls -la $GITHUB_WORKSPACE
-          ls -la $GITHUB_WORKSPACE/..
-
-
-          bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
+        run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
         env:
           RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
-  # build:
-  # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
-  #   needs: [configure]
-  #   permissions:
-  #     contents: write
-  #   strategy:
-  #     fail-fast: true
-  #     matrix:
-  #       platform:
-  #         - os: 'ubuntu-22.04'
-  #           target: 'x86_64-unknown-linux-musl'
-  #         - os: 'ubuntu-22.04'
-  #           target: 'aarch64-unknown-linux-musl'
-  #         - os: 'macos-latest'
-  #           target: 'x86_64-apple-darwin'
-  #         - os: 'macos-latest'
-  #           target: 'aarch64-apple-darwin'
-  #   runs-on: ${{ matrix.platform.os }}
-  #   steps:
-  # - name: Checkout Repository
-  #   uses: actions/checkout@v4
-  #     - name: Setup pnpm
-  #       uses: pnpm/action-setup@v3
-  #     - name: Setup node
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 'lts/iron'
-  #         cache: 'pnpm'
-  #     - name: Install Cross-Compilation Dependencies (Ubuntu)
-  #       if: matrix.platform.target == 'aarch64-unknown-linux-musl'
-  #       run: sudo apt-get install -y gcc-aarch64-linux-gnu
-  #     - name: Install Node Dependencies
-  #       run: pnpm install
-  #     - name: Install Rust
-  #       uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         targets: ${{ matrix.platform.target }}
-  #     - name: Setup Rust Cache
-  #       uses: swatinem/rust-cache@v2
-  #     - name: Compile Binary
-  #       run: pnpm build --release --target ${{ matrix.platform.target }}
-  #     - name: 'Tar Binary'
-  #       run: |
-  #         tar -czvf ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz ./dist/index.node
-  #     - name: Upload Artifact
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
-  #         path: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz
-  #         if-no-files-found: 'error'
+  build:
+    needs: [configure]
+    permissions:
+      contents: write
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - os: 'ubuntu-22.04'
+            target: 'x86_64-unknown-linux-musl'
+          - os: 'ubuntu-22.04'
+            target: 'aarch64-unknown-linux-musl'
+          - os: 'macos-latest'
+            target: 'x86_64-apple-darwin'
+          - os: 'macos-latest'
+            target: 'aarch64-apple-darwin'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          cache: 'pnpm'
+      - name: Install Cross-Compilation Dependencies (Ubuntu)
+        if: matrix.platform.target == 'aarch64-unknown-linux-musl'
+        run: sudo apt-get install -y gcc-aarch64-linux-gnu
+      - name: Install Node Dependencies
+        run: pnpm install
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform.target }}
+      - name: Setup Rust Cache
+        uses: swatinem/rust-cache@v2
+      - name: Compile Binary
+        run: pnpm build --release --target ${{ matrix.platform.target }}
+      - name: 'Tar Binary'
+        run: |
+          tar -czvf ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz ./dist/index.node
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+          path: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}.tar.gz
+          if-no-files-found: 'error'
   # publish-release:
   #   permissions:
   #     contents: write
