@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: print
         run: |
-          echo ${{ needs.configure.outputs.package_name }}
+          echo ${{ needs.configure.outputs.release_version }}
   # build:
   #   needs: [configure]
   #   permissions:
