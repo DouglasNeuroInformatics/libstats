@@ -19,12 +19,21 @@ importers:
       '@douglasneuroinformatics/prettier-config':
         specifier: ^0.0.1
         version: 0.0.1(husky@9.1.5)(prettier@3.3.3)
-      '@douglasneuroinformatics/semantic-release':
-        specifier: ^0.0.1
-        version: 0.0.1(@commitlint/cli@19.4.1(@types/node@20.16.2)(typescript@5.5.4))(@commitlint/config-conventional@19.4.1)(husky@9.1.5)(typescript@5.5.4)
       '@douglasneuroinformatics/tsconfig':
         specifier: ^1.0.2
         version: 1.0.2(typescript@5.5.4)
+      '@semantic-release/changelog':
+        specifier: ^6.0.3
+        version: 6.0.3(semantic-release@23.1.1(typescript@5.5.4))
+      '@semantic-release/commit-analyzer':
+        specifier: ^12.0.0
+        version: 12.0.0(semantic-release@23.1.1(typescript@5.5.4))
+      '@semantic-release/git':
+        specifier: ^10.0.1
+        version: 10.0.1(semantic-release@23.1.1(typescript@5.5.4))
+      '@semantic-release/release-notes-generator':
+        specifier: ^13.0.0
+        version: 13.0.0(semantic-release@23.1.1(typescript@5.5.4))
       '@types/node':
         specifier: 20.x
         version: 20.16.2
@@ -40,6 +49,9 @@ importers:
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
+      semantic-release:
+        specifier: ^23.0.7
+        version: 23.1.1(typescript@5.5.4)
       typescript:
         specifier: ~5.5.4
         version: 5.5.4
@@ -183,22 +195,6 @@ packages:
       prettier-plugin-svelte:
         optional: true
       prettier-plugin-tailwindcss:
-        optional: true
-
-  '@douglasneuroinformatics/semantic-release@0.0.1':
-    resolution:
-      { integrity: sha512-ZTAsAGGvKghkUwNNoQQ8N+BLaKcToweRD4KP6DKQzH6kR7MD3z7Qosn+yzuPHt1u9ITMCmo8Yb+b88SVtsvSNg== }
-    hasBin: true
-    peerDependencies:
-      '@commitlint/cli': 19.x
-      '@commitlint/config-conventional': 19.x
-      husky: 9.x
-    peerDependenciesMeta:
-      '@commitlint/cli':
-        optional: true
-      '@commitlint/config-conventional':
-        optional: true
-      husky:
         optional: true
 
   '@douglasneuroinformatics/tsconfig@1.0.2':
@@ -3214,23 +3210,6 @@ snapshots:
       prettier: 3.3.3
     optionalDependencies:
       husky: 9.1.5
-
-  '@douglasneuroinformatics/semantic-release@0.0.1(@commitlint/cli@19.4.1(@types/node@20.16.2)(typescript@5.5.4))(@commitlint/config-conventional@19.4.1)(husky@9.1.5)(typescript@5.5.4)':
-    dependencies:
-      '@semantic-release/changelog': 6.0.3(semantic-release@23.1.1(typescript@5.5.4))
-      '@semantic-release/commit-analyzer': 12.0.0(semantic-release@23.1.1(typescript@5.5.4))
-      '@semantic-release/git': 10.0.1(semantic-release@23.1.1(typescript@5.5.4))
-      '@semantic-release/github': 10.1.7(semantic-release@23.1.1(typescript@5.5.4))
-      '@semantic-release/npm': 12.0.1(semantic-release@23.1.1(typescript@5.5.4))
-      '@semantic-release/release-notes-generator': 13.0.0(semantic-release@23.1.1(typescript@5.5.4))
-      semantic-release: 23.1.1(typescript@5.5.4)
-    optionalDependencies:
-      '@commitlint/cli': 19.4.1(@types/node@20.16.2)(typescript@5.5.4)
-      '@commitlint/config-conventional': 19.4.1
-      husky: 9.1.5
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   '@douglasneuroinformatics/tsconfig@1.0.2(typescript@5.5.4)':
     dependencies:

@@ -26,13 +26,17 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@douglasneuroinformatics/eslint-config": "^5.1.0",
     "@douglasneuroinformatics/prettier-config": "^0.0.1",
-    "@douglasneuroinformatics/semantic-release": "^0.0.1",
     "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^13.0.0",
     "@types/node": "20.x",
     "cargo-cp-artifact": "^0.1.9",
     "eslint": "^9.9.1",
     "husky": "^9.0.11",
     "prettier": "^3.3.3",
+    "semantic-release": "^23.0.7",
     "typescript": "~5.5.4"
   },
   "commitlint": {
@@ -60,10 +64,5 @@
       ]
     }
   },
-  "prettier": "@douglasneuroinformatics/prettier-config",
-  "release": {
-    "extends": [
-      "@douglasneuroinformatics/semantic-release"
-    ]
-  }
+  "prettier": "@douglasneuroinformatics/prettier-config"
 }
