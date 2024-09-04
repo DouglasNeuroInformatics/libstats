@@ -25,7 +25,9 @@ jobs:
     steps:
       - name: verify version
         run: |
-          ls $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE/..
+
 
           bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
         env:
