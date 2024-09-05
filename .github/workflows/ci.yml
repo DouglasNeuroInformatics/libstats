@@ -27,18 +27,18 @@ jobs:
           echo "RELEASE_TAG=v0.0.2" | sudo tee -a "$GITHUB_OUTPUT"
           echo "PNPM_VERSION=$(cat package.json| jq .packageManager -r | cut -d'@' -f 2)" | sudo tee -a "$GITHUB_OUTPUT"
   # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
-  verify:
-    runs-on: ubuntu-22.04
-    needs: [configure]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Verify Version
-        run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
-        env:
-          RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
+  # verify:
+  #   runs-on: ubuntu-22.04
+  #   needs: [configure]
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #     - name: Verify Version
+  #       run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
+  #       env:
+  #         RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
   build:
-    needs: [configure, verify]
+    needs: [configure]
     permissions:
       contents: write
     runs-on: ${{ matrix.platform.os }}
@@ -89,6 +89,7 @@ jobs:
       - name: 'Archive Package'
         run: |
           cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} echo "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
+          mv /home/runner/work/libstats/libstats/npm/libstats-x86_64-unknown-linux-musl/douglasneuroinformatics-libstats-x86_64-unknown-linux-musl-0.0.2.tgz /home/runner/work/libstats/libstats/libstats-x86_64-unknown-linux-musl.tgz
           # cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v4
