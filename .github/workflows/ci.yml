@@ -37,33 +37,8 @@ jobs:
         run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
         env:
           RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
-  build-main:
+  build:
     needs: [configure, verify]
-    permissions:
-      contents: write
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/iron'
-          cache: 'pnpm'
-      - name: Install Node Dependencies
-        run: pnpm install
-      - name: 'Archive Package'
-        run: pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv "{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.PACKAGE_NAME }}
-          path: ${{ env.PACKAGE_NAME }}.tgz
-          if-no-files-found: 'error'
-  build-native:
-    needs: [build-main, configure, verify]
     permissions:
       contents: write
     runs-on: ${{ matrix.platform.os }}
@@ -119,33 +94,33 @@ jobs:
           name: ${{ env.TARGET_PACKAGE_NAME }}
           path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
           if-no-files-found: 'error'
-  # publish-release:
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-22.04
-  #   needs: [configure, build]
-  #   env:
-  #     NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
-  #     TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
-  #   steps:
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         path: build
-  #     - name: Setup PNPM
-  #       uses: pnpm/action-setup@v4
-  #       with:
-  #         version: ${{ needs.configure.outputs.pnpm_version }}
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 'lts/iron'
-  #         registry-url: https://registry.npmjs.org/
-  #     - name: Publish to NPM
-  #       run: find build -name "*.tgz" -exec pnpm publish {} \;
-  #     # - name: Publish Release
-  #     #   uses: softprops/action-gh-release@v2
-  #     #   with:
-  #     #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
-  #     #     files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
-  #     #     tag_name: v${{ needs.configure.outputs.release_tag }}
+  publish-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    needs: [configure, build]
+    env:
+      NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
+      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: build
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ needs.configure.outputs.pnpm_version }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          registry-url: https://registry.npmjs.org/
+      - name: Publish to NPM
+        run: find build -name "*.tgz" -exec pnpm publish {} \;
+      # - name: Publish Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+      #     files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
+      #     tag_name: v${{ needs.configure.outputs.release_tag }}
