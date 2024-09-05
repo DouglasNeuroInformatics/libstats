@@ -103,11 +103,17 @@ jobs:
         with:
           name: ${{ env.TARGET_PACKAGE }}
           merge-multiple: true
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@douglasneuroinformatics'
       - name: Publish to NPM
         run: |
-          ls -la -R
           tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
-          ls -la -R
+          cd ${{ env.TARGET_PACKAGE }}
+          pnpm publish
 
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
