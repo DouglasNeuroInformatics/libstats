@@ -107,13 +107,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/iron'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@douglasneuroinformatics'
       - name: Publish to NPM
         run: |
           tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
           cd ${{ env.TARGET_PACKAGE }}
           npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
