@@ -85,7 +85,7 @@ jobs:
       - name: Compile Binary
         run: pnpm build --release --target ${{ matrix.platform.target }}
       - name: Copy Binary
-        run: cp ./dist/index.node $TARGET_PACKAGE_DIR/dist/index.node
+        run: cp -r dist $TARGET_PACKAGE_DIR/dist
       - name: 'Archive Package'
         run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "$GITHUB_WORKSPACE/$TARGET_PACKAGE_NAME.tgz"
       - name: Upload Artifact
