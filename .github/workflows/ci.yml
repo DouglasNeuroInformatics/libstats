@@ -82,19 +82,19 @@ jobs:
           name: ${{ env.TARGET_PACKAGE }}
           path: ${{ env.TARGET_PACKAGE }}.tar.gz
           if-no-files-found: 'error'
-  # publish-release:
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-22.04
-  #   needs: [configure, build]
-  #   steps:
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         merge-multiple: true
-  #     - name: Publish Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
-  #         files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
-  #         tag_name: ${{ needs.configure.outputs.package_name }}-v${{ needs.configure.outputs.release_tag }}
+  publish-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    needs: [configure, build]
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+          files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
+          tag_name: ${{ needs.configure.outputs.package_name }}-v${{ needs.configure.outputs.release_tag }}
