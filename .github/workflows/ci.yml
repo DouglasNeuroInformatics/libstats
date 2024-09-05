@@ -59,8 +59,8 @@ jobs:
           # - os: 'windows-2022'
           #   target: 'aarch64-pc-windows-msvc'
     env:
-      TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
       TARGET_PACKAGE_DIR: ${{ github.workspace }}/npm/${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -87,12 +87,12 @@ jobs:
       - name: Copy Binary
         run: cp ./dist/index.node $TARGET_PACKAGE_DIR/index.node
       - name: 'Archive Package'
-        run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE}.tgz"
+        run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.TARGET_PACKAGE }}
-          path: ${{ env.TARGET_PACKAGE }}.tgz
+          name: ${{ env.TARGET_PACKAGE_NAME }}
+          path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
           if-no-files-found: 'error'
   publish-release:
     permissions:
@@ -101,7 +101,7 @@ jobs:
     needs: [configure, build]
     env:
       NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
-      TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
