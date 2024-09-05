@@ -47,6 +47,10 @@ jobs:
             target: 'x86_64-apple-darwin'
           - os: 'macos-latest'
             target: 'aarch64-apple-darwin'
+          # - os: 'windows-2022'
+          #   target: 'x86_64-pc-windows-msvc'
+          # - os: 'windows-2022'
+          #   target: 'aarch64-pc-windows-msvc'
     env:
       TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
@@ -96,7 +100,7 @@ jobs:
           - target: 'x86_64-apple-darwin'
           - target: 'aarch64-apple-darwin'
     env:
-      # NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
+      NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
       TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Download Artifact
@@ -108,7 +112,6 @@ jobs:
         with:
           node-version: 'lts/iron'
           registry-url: https://registry.npmjs.org/
-          token: ${ secrets.NPM_TOKEN }}
       - name: Publish to NPM
         run: npm publish --access public ${{ env.TARGET_PACKAGE }}.tar.gz
       # - name: Publish Release
