@@ -57,7 +57,8 @@
     "supportedArchitectures": {
       "os": [
         "darwin",
-        "linux"
+        "linux",
+        "windows"
       ],
       "cpu": [
         "arm64",
