@@ -92,9 +92,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      - name: Publish Release
-        uses: softprops/action-gh-release@v2
-        with:
-          prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
-          files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
-          tag_name: ${{ needs.configure.outputs.package_name }}-v${{ needs.configure.outputs.release_tag }}
+      - name: Publish to NPM
+        run: ls -la -R
+      # - name: Publish Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+      #     files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
+      #     tag_name: v${{ needs.configure.outputs.release_tag }}
