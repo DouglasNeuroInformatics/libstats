@@ -111,7 +111,7 @@ jobs:
         run: |
           tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
           cd ${{ env.TARGET_PACKAGE }}
-          npm publish
+          npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
