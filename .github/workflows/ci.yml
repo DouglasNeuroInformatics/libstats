@@ -103,8 +103,6 @@ jobs:
         with:
           name: ${{ env.TARGET_PACKAGE }}
           merge-multiple: true
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -115,7 +113,7 @@ jobs:
         run: |
           tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
           cd ${{ env.TARGET_PACKAGE }}
-          pnpm publish
+          npm publish
 
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
