@@ -60,6 +60,7 @@ jobs:
           #   target: 'aarch64-pc-windows-msvc'
     env:
       TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+      TARGET_PACKAGE_DIR: ${{ github.workspace }}/npm/${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -84,12 +85,9 @@ jobs:
       - name: Compile Binary
         run: pnpm build --release --target ${{ matrix.platform.target }}
       - name: Copy Binary
-        run: cp ./dist/index.node ./npm/$TARGET_PACKAGE/index.node
+        run: cp ./dist/index.node $TARGET_PACKAGE_DIR/index.node
       - name: 'Archive Package'
-        run: |
-          echo "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}"
-          cd "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}" && pnpm pack | xargs -I {} echo {}
-        # run: cd "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}" && pnpm pack | xargs -I {} mv {} "${GITHUB_WORKSPACE}/${TARGET_PACKAGE}.tgz"
+        run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE}.tgz"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
