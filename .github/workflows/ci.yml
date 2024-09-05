@@ -107,13 +107,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/iron'
+          token: ${{ secrets.NPM_TOKEN }}
       - name: Publish to NPM
         run: |
           tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
           cd ${{ env.TARGET_PACKAGE }}
-          npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish --access public
 
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
