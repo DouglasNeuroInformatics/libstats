@@ -1,0 +1,28 @@
+{
+  "name": "@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc",
+  "version": "0.0.2",
+  "description": "This is the aarch64-pc-windows-msvc binary for @douglasneuroinformatics/libstats",
+  "os": [
+    "windows"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git",
+    "directory": "npm/libstats-aarch64-pc-windows-msvc"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
+  "main": "index.node",
+  "files": [
+    "index.node"
+  ],
+  "engines": {
+    "node": "20.x"
+  }
+}
