@@ -1,4 +1,0 @@
-{
-  "extends": ["@douglasneuroinformatics/tsconfig"],
-  "include": ["lib/index.d.cts"]
-}
