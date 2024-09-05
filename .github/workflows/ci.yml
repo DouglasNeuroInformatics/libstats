@@ -87,13 +87,28 @@ jobs:
       contents: write
     runs-on: ubuntu-22.04
     needs: [configure, build]
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - target: 'x86_64-unknown-linux-musl'
+          - target: 'aarch64-unknown-linux-musl'
+          - target: 'x86_64-apple-darwin'
+          - target: 'aarch64-apple-darwin'
+    env:
+      TARGET_PACKAGE: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
+          name: ${{ env.TARGET_PACKAGE }}
           merge-multiple: true
       - name: Publish to NPM
-        run: ls -la -R
+        run: |
+          ls -la -R
+          tar -xvf ${{ env.TARGET_PACKAGE }}.tar.gz
+          ls -la -R
+
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
