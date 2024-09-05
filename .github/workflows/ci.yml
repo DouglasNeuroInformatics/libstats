@@ -86,7 +86,10 @@ jobs:
       - name: Copy Binary
         run: cp ./dist/index.node ./npm/$TARGET_PACKAGE/index.node
       - name: 'Archive Package'
-        run: cd "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}" && pnpm pack | xargs -I {} mv {} "${GITHUB_WORKSPACE}/${TARGET_PACKAGE}.tgz"
+        run: |
+          echo "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}"
+          cd "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}" && pnpm pack | xargs -I {} echo {}
+        # run: cd "${GITHUB_WORKSPACE}/npm/${TARGET_PACKAGE}" && pnpm pack | xargs -I {} mv {} "${GITHUB_WORKSPACE}/${TARGET_PACKAGE}.tgz"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
