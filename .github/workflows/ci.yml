@@ -85,12 +85,12 @@ jobs:
       - name: Copy Binary
         run: cp ./dist/index.node ./npm/$TARGET_PACKAGE/index.node
       - name: 'Archive Package'
-        run: tar -C npm -czvf $TARGET_PACKAGE.tar.gz $TARGET_PACKAGE
+        run: pnpm pack ./npm/$TARGET_PACKAGE
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.TARGET_PACKAGE }}
-          path: ${{ env.TARGET_PACKAGE }}.tar.gz
+          path: ${{ env.TARGET_PACKAGE }}.tgz
           if-no-files-found: 'error'
   publish-release:
     permissions:
@@ -114,12 +114,8 @@ jobs:
         with:
           node-version: 'lts/iron'
           registry-url: https://registry.npmjs.org/
-      - name: Extract Archives
-        run: find build -name "*.tar.gz" -exec tar -C build -xvf {} \;
       - name: Publish to NPM
-        run: |
-          ls -la -R
-          find build -name 'libstats-*' -type d -exec pnpm publish {} \;'
+        run: find build -name "*.tgz" -exec pnpm publish {} \;
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
