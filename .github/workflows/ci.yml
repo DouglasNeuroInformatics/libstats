@@ -13,6 +13,7 @@ jobs:
     outputs:
       package_name: ${{ steps.define.outputs.PACKAGE_NAME }}
       release_tag: ${{ steps.define.outputs.RELEASE_TAG }}
+      pnpm_version: ${{ steps.define.outputs.PNPM_VERSION }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -20,6 +21,7 @@ jobs:
         run: |
           echo "PACKAGE_NAME=$(cat package.json | jq -r .name | xargs basename)" | sudo tee -a "$GITHUB_OUTPUT"
           echo "RELEASE_TAG=v0.0.2" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "PNPM_VERSION=$(cat package.json| jq .packageManager -r | cut -d'@' -f 2)" | sudo tee -a "$GITHUB_OUTPUT"
   # echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
   verify:
     runs-on: ubuntu-22.04
@@ -58,7 +60,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Setup PNPM
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -113,8 +115,12 @@ jobs:
         with:
           node-version: 'lts/iron'
           registry-url: https://registry.npmjs.org/
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ needs.configure.outputs.pnpm_version }}
       - name: Publish to NPM
-        run: npm publish --access public ${{ env.TARGET_PACKAGE }}.tar.gz
+        run: pnpm publish --access public ${{ env.TARGET_PACKAGE }}.tar.gz
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
