@@ -1,15 +1,13 @@
 function sum(arr: number[]): number;
 
-export = { sum };
+function mean(arr: number[]): number;
 
-// function mean(arr: number[]): number;
+function std(arr: number[], isPopulation?: boolean): number;
 
-// function std(arr: number[], isPopulation?: boolean): number;
+function linearRegression(arr: [number, number][]): {
+  intercept: number;
+  slope: number;
+  stdErr: number;
+};
 
-// function linearRegression(arr: [number, number][]): {
-//   intercept: number;
-//   slope: number;
-//   stdErr: number;
-// };
-
-// export = { linearRegression, mean, std, sum };
+export = { linearRegression, mean, std, sum };
