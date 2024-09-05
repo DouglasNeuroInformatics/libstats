@@ -48,8 +48,8 @@ jobs:
         platform:
           - os: 'ubuntu-22.04'
             target: 'x86_64-unknown-linux-musl'
-          - os: 'ubuntu-22.04'
-            target: 'aarch64-unknown-linux-musl'
+          # - os: 'ubuntu-22.04'
+          #   target: 'aarch64-unknown-linux-musl'
           # - os: 'macos-latest'
           #   target: 'x86_64-apple-darwin'
           # - os: 'macos-latest'
@@ -71,56 +71,58 @@ jobs:
         with:
           node-version: 'lts/iron'
           cache: 'pnpm'
-      - name: Install Cross-Compilation Dependencies (Ubuntu)
-        if: matrix.platform.target == 'aarch64-unknown-linux-musl'
-        run: sudo apt-get install -y gcc-aarch64-linux-gnu
-      - name: Install Node Dependencies
-        run: pnpm install
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform.target }}
-      - name: Setup Rust Cache
-        uses: swatinem/rust-cache@v2
-      - name: Compile Binary
-        run: pnpm build --release --target ${{ matrix.platform.target }}
-      - name: Copy Binary
-        run: cp ./dist/index.node $TARGET_PACKAGE_DIR/index.node
-      - name: 'Archive Package'
-        run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.TARGET_PACKAGE_NAME }}
-          path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
-          if-no-files-found: 'error'
-  publish-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-22.04
-    needs: [configure, build]
-    env:
-      NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
-      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          path: build
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ needs.configure.outputs.pnpm_version }}
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/iron'
-          registry-url: https://registry.npmjs.org/
-      - name: Publish to NPM
-        run: find build -name "*.tgz" -exec pnpm publish {} \;
-      # - name: Publish Release
-      #   uses: softprops/action-gh-release@v2
+      # - name: Install Cross-Compilation Dependencies (Ubuntu)
+      #   if: matrix.platform.target == 'aarch64-unknown-linux-musl'
+      #   run: sudo apt-get install -y gcc-aarch64-linux-gnu
+      # - name: Install Node Dependencies
+      #   run: pnpm install
+      # - name: Install Rust
+      #   uses: dtolnay/rust-toolchain@stable
       #   with:
-      #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
-      #     files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
-      #     tag_name: v${{ needs.configure.outputs.release_tag }}
+      #     targets: ${{ matrix.platform.target }}
+      # - name: Setup Rust Cache
+      #   uses: swatinem/rust-cache@v2
+      # - name: Compile Binary
+      #   run: pnpm build --release --target ${{ matrix.platform.target }}
+      # - name: Copy Binary
+      #   run: cp ./dist/index.node $TARGET_PACKAGE_DIR/index.node
+      - name: 'Archive Package'
+        run: |
+          cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} echo "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
+          # cd "$TARGET_PACKAGE_DIR" && pnpm pack | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "${GITHUB_WORKSPACE}/${TARGET_PACKAGE_NAME}.tgz"
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ env.TARGET_PACKAGE_NAME }}
+      #     path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
+      #     if-no-files-found: 'error'
+  # publish-release:
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-22.04
+  #   needs: [configure, build]
+  #   env:
+  #     NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
+  #     TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+  #   steps:
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         path: build
+  #     - name: Setup PNPM
+  #       uses: pnpm/action-setup@v4
+  #       with:
+  #         version: ${{ needs.configure.outputs.pnpm_version }}
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 'lts/iron'
+  #         registry-url: https://registry.npmjs.org/
+  #     - name: Publish to NPM
+  #       run: find build -name "*.tgz" -exec pnpm publish {} \;
+  #     # - name: Publish Release
+  #     #   uses: softprops/action-gh-release@v2
+  #     #   with:
+  #     #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+  #     #     files: ${{ needs.configure.outputs.package_name }}-*.tar.gz
+  #     #     tag_name: v${{ needs.configure.outputs.release_tag }}
