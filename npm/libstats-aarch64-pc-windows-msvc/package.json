@@ -18,9 +18,9 @@
   "bugs": {
     "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
   },
-  "main": "index.node",
+  "main": "dist/index.node",
   "files": [
-    "index.node"
+    "dist"
   ],
   "engines": {
     "node": "20.x"
