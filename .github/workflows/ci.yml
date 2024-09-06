@@ -86,6 +86,8 @@ jobs:
         run: pnpm build --release --target ${{ matrix.platform.target }}
       - name: Copy Binary
         run: cp -r dist $TARGET_PACKAGE_DIR/dist
+      - name: Copy License
+        run: cp LICENSE $TARGET_PACKAGE_DIR
       - name: 'Archive Package'
         run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "$GITHUB_WORKSPACE/$TARGET_PACKAGE_NAME.tgz"
       - name: Upload Artifact
@@ -147,8 +149,9 @@ jobs:
         run: |
           ls -la -R
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
-          find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
+          find . -type d -name "${PACKAGE_NAME}*" -exec sh -c 'cd {} && pnpm publish' \;
           find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
+          ls -la -R
 
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
