@@ -101,7 +101,7 @@ jobs:
     needs: [configure, build]
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+      PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
