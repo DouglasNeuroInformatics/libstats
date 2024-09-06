@@ -118,10 +118,13 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Publish to NPM
         run: |
-          ls -ls -R
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
-          for dir in "$GITHUB_WORKSPACE/build/*"; do
-            sh -c 'cd $dir && pnpm publish'
+          ls -ls -R
+          for dir in "$PWD/*"; do
+            cd $dir
+            ls
+            pnpm publish
+            cd ..
           done
         working-directory: build
       # find build -name "*.tgz" -exec pnpm publish {} \;
