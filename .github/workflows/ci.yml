@@ -125,7 +125,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-22.04
-    needs: [configure, build-native]
+    needs: [configure, build-native, build-root]
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}
