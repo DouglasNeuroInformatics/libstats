@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [configure, build]
     env:
-      NODE_AUTH_TOKEN: ${ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
     steps:
       - name: Download Artifact
@@ -123,8 +123,6 @@ jobs:
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
           find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
         working-directory: build
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
