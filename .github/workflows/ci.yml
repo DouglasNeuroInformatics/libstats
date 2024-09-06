@@ -147,15 +147,12 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
       - name: Publish Native Packages
         run: |
-          ls -la -R
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
           find . -type d -name "${PACKAGE_NAME}*" -exec sh -c 'cd {} && pnpm publish' \;
           find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
-          ls -la -R
-
-      # - name: Publish Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
-      #     files: ${{ needs.configure.outputs.package_name }}-*.tgz
-      #     tag_name: v${{ needs.configure.outputs.release_tag }}
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+          files: ${{ needs.configure.outputs.package_name }}*.tgz
+          tag_name: ${{ needs.configure.outputs.release_tag }}
