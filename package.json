@@ -65,6 +65,9 @@
         "eslint": "9.x"
       }
     },
+    "ignoredOptionalDependencies": [
+      "@douglasneuroinformatics/libstats-*"
+    ],
     "supportedArchitectures": {
       "os": [
         "darwin",
