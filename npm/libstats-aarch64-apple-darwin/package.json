@@ -1,6 +1,6 @@
 {
   "name": "@douglasneuroinformatics/libstats-aarch64-apple-darwin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This is the aarch64-apple-darwin binary for @douglasneuroinformatics/libstats",
   "os": [
     "darwin"

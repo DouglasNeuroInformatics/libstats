@@ -1,6 +1,6 @@
 {
   "name": "@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This is the x86_64-pc-windows-msvc binary for @douglasneuroinformatics/libstats",
   "os": [
     "windows"
