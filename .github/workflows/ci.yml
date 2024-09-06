@@ -119,13 +119,7 @@ jobs:
       - name: Publish to NPM
         run: |
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
-          ls -ls -R
-          for dir in "$PWD/*"; do
-            cd $dir
-            ls
-            pnpm publish
-            cd ..
-          done
+          find . -type dir -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
         working-directory: build
       # find build -name "*.tgz" -exec pnpm publish {} \;
 
