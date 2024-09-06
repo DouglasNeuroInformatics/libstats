@@ -125,7 +125,9 @@ jobs:
           find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
           find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
           cd "$GITHUB_WORKSPACE"
-          ls -la -R
+          pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv {} "$PACKAGE_NAME.tgz"
+          pnpm publish "$PACKAGE_NAME.tgz"
+
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
