@@ -119,13 +119,9 @@ jobs:
       - name: Publish to NPM
         run: |
           ls -ls -R
-          for file in *.tgz; do
-            dir=$(echo $file | cut -d'.' -f 1)
-            mkdir $dir
-            tar -xvz --cd $dir --file $file --strip-components=1
-            cd $dir
-            ls -la -R
-            rm -rf dir
+          find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
+          for dir in "$PWD/*"; do
+            pnpm publish
           done
         working-directory: build
       # find build -name "*.tgz" -exec pnpm publish {} \;
