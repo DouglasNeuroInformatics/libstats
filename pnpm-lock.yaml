@@ -6,6 +6,25 @@ settings:
 
 importers:
   .:
+    optionalDependencies:
+      '@douglasneuroinformatics/libstats-aarch64-apple-darwin':
+        specifier: 0.0.3
+        version: 0.0.3
+      '@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc':
+        specifier: 0.0.3
+        version: 0.0.3
+      '@douglasneuroinformatics/libstats-aarch64-unknown-linux-musl':
+        specifier: 0.0.3
+        version: 0.0.3
+      '@douglasneuroinformatics/libstats-x86_64-apple-darwin':
+        specifier: 0.0.3
+        version: 0.0.3
+      '@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc':
+        specifier: 0.0.3
+        version: 0.0.3
+      '@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl':
+        specifier: 0.0.3
+        version: 0.0.3
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.3.0
@@ -164,6 +183,48 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  '@douglasneuroinformatics/libstats-aarch64-apple-darwin@0.0.3':
+    resolution:
+      { integrity: sha512-5WSn6g3JoSd98WzCzAB5MqD8IuSyWKsdXJJuKBmDad/WjGQdhw7Cf9xk9orN3P0NwZL8Fzt8pQ1/zNMC3WPfMg== }
+    engines: { node: 20.x }
+    cpu: [arm64]
+    os: [darwin]
+
+  '@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc@0.0.3':
+    resolution:
+      { integrity: sha512-F1E162WjBaOiPx5dyU/k97B6vNGPCj+LcJhAvKmQHYuTiWZBkPSPgBfIWNDj8HCTW4vXXgjjVe7y0hpZrK6MLw== }
+    engines: { node: 20.x }
+    cpu: [arm64]
+    os: [windows]
+
+  '@douglasneuroinformatics/libstats-aarch64-unknown-linux-musl@0.0.3':
+    resolution:
+      { integrity: sha512-EsDynOKBRxffa9ho8xk6fTIXgB+RA3886Kx2v/t7AX3ppbVHLGBSbcGmAtO1zYN+jzWKlYzCjx4JIRkxzEqiiA== }
+    engines: { node: 20.x }
+    cpu: [arm64]
+    os: [linux]
+
+  '@douglasneuroinformatics/libstats-x86_64-apple-darwin@0.0.3':
+    resolution:
+      { integrity: sha512-rweyDE8CbLueLTeRZzcxHDKToRoooNFkHomJXbKzWmW0/gcv6N4oh1wFiUOAYfHnf7Sbpokb5jXV7qfSC1tfxQ== }
+    engines: { node: 20.x }
+    cpu: [x64]
+    os: [darwin]
+
+  '@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc@0.0.3':
+    resolution:
+      { integrity: sha512-dJTcEWShfnci7tO08pboFtzUK65Sm9gg/bCPeblGVeXDmRHFFLW4kjED+8dIts53mkDexsqUg/1RcY4sUbT+0Q== }
+    engines: { node: 20.x }
+    cpu: [x64]
+    os: [windows]
+
+  '@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl@0.0.3':
+    resolution:
+      { integrity: sha512-Yp0poOX4qCuRF5+/jJpEFQQdXMA/kpRh+fr6fkUxESdti+Kl0Cq2V2PqTuD5PRuaOYRAQblkaA6ktNQEoshf5w== }
+    engines: { node: 20.x }
+    cpu: [x64]
+    os: [linux]
 
   '@douglasneuroinformatics/prettier-config@0.0.1':
     resolution:
@@ -2687,6 +2748,24 @@ snapshots:
       - svelte-eslint-parser
       - ts-node
       - vue-eslint-parser
+
+  '@douglasneuroinformatics/libstats-aarch64-apple-darwin@0.0.3':
+    optional: true
+
+  '@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc@0.0.3':
+    optional: true
+
+  '@douglasneuroinformatics/libstats-aarch64-unknown-linux-musl@0.0.3':
+    optional: true
+
+  '@douglasneuroinformatics/libstats-x86_64-apple-darwin@0.0.3':
+    optional: true
+
+  '@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc@0.0.3':
+    optional: true
+
+  '@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl@0.0.3':
+    optional: true
 
   '@douglasneuroinformatics/prettier-config@0.0.1(husky@9.1.5)(prettier@3.3.3)':
     dependencies:
