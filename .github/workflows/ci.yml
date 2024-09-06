@@ -118,6 +118,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Publish to NPM
         run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
           find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
         working-directory: build
