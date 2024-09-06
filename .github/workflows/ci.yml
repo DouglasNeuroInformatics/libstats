@@ -120,9 +120,12 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
       - name: Publish to NPM
         run: |
+          cd "$GITHUB_WORKSPACE/build"
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
           find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
-        working-directory: build
+          find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
+          cd "$GITHUB_WORKSPACE"
+          ls -la -R
       # - name: Publish Release
       #   uses: softprops/action-gh-release@v2
       #   with:
