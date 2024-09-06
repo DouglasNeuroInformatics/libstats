@@ -34,7 +34,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Verify Version
-        run: bash ${GITHUB_WORKSPACE}/scripts/verify-release.sh ${RELEASE_TAG:1}
+        run: |
+          set -euo pipefail
+          release_tag=${RELEASE_TAG:-}
+          release_version=${release_tag:1}
+          if [ -z $release_version ]; then
+            echo "ERROR: Failed to parse release version" >&2
+            exit 1
+          elif [[ ! $release_version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta.[0-9]+)?$ ]]; then
+            echo "ERROR: Invalid format of release version \"$release_version\"" >&2
+            exit 1
+          fi
+          while read -r -d $'\0' filepath; do
+            package_version=$(jq -r .version $filepath)
+            if [[ "$release_version" != "$package_version" ]]; then
+              echo "ERROR: Unexpected version in file \"$filepath\", expected \"$release_version\" but found \"$package_version\"" >&2
+              exit 1
+            fi
+          done < <(find .  -type f '(' -path './npm/*/package.json' -o -path './package.json' ')' -print0)
+          echo "Done! Verified Release $release_version"
         env:
           RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
   build-native:
