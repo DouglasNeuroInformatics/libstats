@@ -114,7 +114,7 @@ jobs:
       - name: Install Node Dependencies
         run: pnpm install
       - name: 'Archive Package'
-        run: pnpm pack | grep '^.*\.tgz$' | sed 's/HUSKY=0 skip install// | xargs -I {} mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
+        run: pnpm pack | grep '^.*\.tgz$' | sed 's/HUSKY=0 skip install//' | xargs -I {} mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
