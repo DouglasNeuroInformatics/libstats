@@ -5,5 +5,5 @@
     "checkJs": true,
     "maxNodeModuleJsDepth": 0
   },
-  "files": ["postinstall.js", "lib/index.cjs", "lib/index.d.cts", "test/index.test.js"]
+  "files": ["lib/index.js", "lib/index.d.ts", "test/index.test.js"]
 }

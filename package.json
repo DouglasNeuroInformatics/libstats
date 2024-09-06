@@ -15,20 +15,18 @@
   },
   "exports": {
     ".": {
-      "types": "./lib/index.d.cts",
-      "default": "./lib/index.cjs"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
     }
   },
   "files": [
-    "lib",
-    "postinstall.js"
+    "lib"
   ],
   "engines": {
     "node": "20.x"
   },
   "scripts": {
     "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
-    "postinstall": "node postinstall.js",
     "prepare": "husky",
     "test": "vitest --run"
   },
