@@ -120,7 +120,7 @@ jobs:
         run: |
           ls -ls -R
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
-          for dir in "$PWD/*"; do
+          for dir in "$GITHUB_WORKSPACE/build/*"; do
             sh -c 'cd $dir && pnpm publish'
           done
         working-directory: build
