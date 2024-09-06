@@ -1,0 +1,85 @@
+{
+  "name": "@douglasneuroinformatics/libstats",
+  "type": "module",
+  "version": "0.0.4",
+  "packageManager": "pnpm@9.7.0",
+  "description": "Basic statistics for Node.js, written in Rust",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
+    "prepare": "husky",
+    "test": "vitest --run"
+  },
+  "optionalDependencies": {
+    "@douglasneuroinformatics/libstats-aarch64-apple-darwin": "0.0.4",
+    "@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc": "0.0.4",
+    "@douglasneuroinformatics/libstats-aarch64-unknown-linux-musl": "0.0.4",
+    "@douglasneuroinformatics/libstats-x86_64-apple-darwin": "0.0.4",
+    "@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc": "0.0.4",
+    "@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl": "0.0.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@douglasneuroinformatics/eslint-config": "^5.1.0",
+    "@douglasneuroinformatics/prettier-config": "^0.0.1",
+    "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "@types/node": "20.x",
+    "cargo-cp-artifact": "^0.1.9",
+    "eslint": "^9.9.1",
+    "husky": "^9.0.11",
+    "prettier": "^3.3.3",
+    "typescript": "~5.5.4",
+    "vitest": "^2.0.5"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "9.x"
+      }
+    },
+    "ignoredOptionalDependencies": [
+      "@douglasneuroinformatics/libstats-*"
+    ],
+    "supportedArchitectures": {
+      "os": [
+        "darwin",
+        "linux",
+        "windows"
+      ],
+      "cpu": [
+        "arm64",
+        "x64"
+      ],
+      "libc": [
+        "musl"
+      ]
+    }
+  },
+  "prettier": "@douglasneuroinformatics/prettier-config"
+}

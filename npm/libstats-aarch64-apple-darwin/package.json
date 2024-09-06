@@ -1,0 +1,28 @@
+{
+  "name": "@douglasneuroinformatics/libstats-aarch64-apple-darwin",
+  "version": "0.0.4",
+  "description": "This is the aarch64-apple-darwin binary for @douglasneuroinformatics/libstats",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git",
+    "directory": "npm/libstats-aarch64-apple-darwin"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
+  "main": "dist/index.node",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": "20.x"
+  }
+}

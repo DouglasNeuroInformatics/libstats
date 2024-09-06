@@ -1,0 +1,175 @@
+name: Build and Release
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+env:
+  CARGO_TERM_COLOR: always
+  HUSKY: 0
+jobs:
+  configure:
+    runs-on: ubuntu-22.04
+    outputs:
+      package_name: ${{ steps.define.outputs.PACKAGE_NAME }}
+      release_tag: ${{ steps.define.outputs.RELEASE_TAG }}
+      pnpm_version: ${{ steps.define.outputs.PNPM_VERSION }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - id: define
+        run: |
+          echo "PACKAGE_NAME=$(cat package.json | jq -r .name | xargs basename)" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" | sudo tee -a "$GITHUB_OUTPUT"
+          echo "PNPM_VERSION=$(cat package.json| jq .packageManager -r | cut -d'@' -f 2)" | sudo tee -a "$GITHUB_OUTPUT"
+  verify:
+    runs-on: ubuntu-22.04
+    needs: [configure]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Verify Version
+        run: |
+          set -euo pipefail
+          release_tag=${RELEASE_TAG:-}
+          release_version=${release_tag:1}
+          if [ -z $release_version ]; then
+            echo "ERROR: Failed to parse release version" >&2
+            exit 1
+          elif [[ ! $release_version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta.[0-9]+)?$ ]]; then
+            echo "ERROR: Invalid format of release version \"$release_version\"" >&2
+            exit 1
+          fi
+          while read -r -d $'\0' filepath; do
+            package_version=$(jq -r .version $filepath)
+            if [[ "$release_version" != "$package_version" ]]; then
+              echo "ERROR: Unexpected version in file \"$filepath\", expected \"$release_version\" but found \"$package_version\"" >&2
+              exit 1
+            fi
+          done < <(find .  -type f '(' -path './npm/*/package.json' -o -path './package.json' ')' -print0)
+          echo "Done! Verified Release $release_version"
+        env:
+          RELEASE_TAG: ${{ needs.configure.outputs.release_tag }}
+  build-native:
+    needs: [configure, verify]
+    permissions:
+      contents: write
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - os: 'ubuntu-22.04'
+            target: 'x86_64-unknown-linux-musl'
+          - os: 'ubuntu-22.04'
+            target: 'aarch64-unknown-linux-musl'
+          - os: 'macos-latest'
+            target: 'x86_64-apple-darwin'
+          - os: 'macos-latest'
+            target: 'aarch64-apple-darwin'
+          - os: 'windows-2022'
+            target: 'x86_64-pc-windows-msvc'
+          - os: 'windows-2022'
+            target: 'aarch64-pc-windows-msvc'
+    env:
+      TARGET_PACKAGE_DIR: ${{ github.workspace }}/npm/${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+      TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          cache: 'pnpm'
+      - name: Install Cross-Compilation Dependencies (Ubuntu)
+        if: matrix.platform.target == 'aarch64-unknown-linux-musl'
+        run: sudo apt-get install -y gcc-aarch64-linux-gnu
+      - name: Install Node Dependencies
+        run: pnpm install
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform.target }}
+      - name: Setup Rust Cache
+        uses: swatinem/rust-cache@v2
+      - name: Compile Binary
+        run: pnpm build --release --target ${{ matrix.platform.target }}
+      - name: Copy Binary
+        run: cp -r dist $TARGET_PACKAGE_DIR/dist
+      - name: Copy License
+        run: cp LICENSE $TARGET_PACKAGE_DIR
+      - name: 'Archive Package'
+        run: cd "$TARGET_PACKAGE_DIR" && pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv "$TARGET_PACKAGE_DIR/{}" "$GITHUB_WORKSPACE/$TARGET_PACKAGE_NAME.tgz"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.TARGET_PACKAGE_NAME }}
+          path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
+          if-no-files-found: 'error'
+  build-root:
+    needs: [configure, verify]
+    permissions:
+      contents: write
+    runs-on: 'ubuntu-22.04'
+    env:
+      PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          cache: 'pnpm'
+      - name: Install Node Dependencies
+        run: pnpm install
+      - name: 'Archive Package'
+        run: pnpm pack | grep '^.*\.tgz$' | sed 's/HUSKY=0 skip install//' | xargs -I {} mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PACKAGE_NAME }}
+          path: ${{ env.PACKAGE_NAME }}.tgz
+          if-no-files-found: 'error'
+  publish-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    needs: [configure, build-native, build-root]
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ needs.configure.outputs.pnpm_version }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          registry-url: https://registry.npmjs.org/
+      - name: NPM Auth
+        run: npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+      - name: Publish Native Packages
+        run: |
+          find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
+          find . -type d -name "${PACKAGE_NAME}*" -exec sh -c 'cd {} && pnpm publish' \;
+          find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: ${{ contains(needs.configure.outputs.release_tag, 'alpha') || contains(needs.configure.outputs.release_tag, 'beta')  }}
+          files: ${{ needs.configure.outputs.package_name }}*.tgz
+          tag_name: ${{ needs.configure.outputs.release_tag }}

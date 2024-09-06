@@ -1,0 +1,9 @@
+{
+  "extends": ["@douglasneuroinformatics/tsconfig"],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "maxNodeModuleJsDepth": 0
+  },
+  "files": ["lib/index.js", "lib/index.d.ts", "test/index.test.js"]
+}

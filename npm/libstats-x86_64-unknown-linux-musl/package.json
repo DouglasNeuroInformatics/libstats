@@ -1,0 +1,31 @@
+{
+  "name": "@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl",
+  "version": "0.0.4",
+  "description": "This is the x86_64-unknown-linux-musl binary for @douglasneuroinformatics/libstats",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git",
+    "directory": "npm/libstats-x86_64-unknown-linux-musl"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
+  "main": "dist/index.node",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": "20.x"
+  },
+  "libc": [
+    "musl"
+  ]
+}
