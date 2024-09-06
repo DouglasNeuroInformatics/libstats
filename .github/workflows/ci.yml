@@ -126,6 +126,8 @@ jobs:
           find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
       - name: Publish Root Package
         run: |
+          pnpm pack
+
           pnpm pack | grep '^.*\.tgz$' | xargs -I {} echo mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
 
           pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
