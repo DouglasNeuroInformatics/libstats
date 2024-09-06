@@ -118,15 +118,16 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: NPM Auth
         run: npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
-      - name: Publish to NPM
+      - name: Publish Native Packages
         run: |
           cd "$GITHUB_WORKSPACE/build"
           find . -name "*.tgz" -print0 | xargs -0 -I {} sh -c 'tar -xzvf {} -C $(dirname {}) --strip-components=1'
           find . -type d -name 'libstats-*' -exec sh -c 'cd {} && pnpm publish' \;
           find . -name "*.tgz" -exec mv {} "$GITHUB_WORKSPACE" \;
-          # cd "$GITHUB_WORKSPACE"
-          # pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv {} "$PACKAGE_NAME.tgz"
-          # pnpm publish "$PACKAGE_NAME.tgz"
+      - name: Publish Root Package
+        run: |
+          pnpm pack | grep '^.*\.tgz$' | xargs -I {} mv {} "$PACKAGE_NAME.tgz"
+          pnpm publish "$PACKAGE_NAME.tgz"
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
