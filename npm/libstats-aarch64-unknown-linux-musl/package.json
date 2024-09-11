@@ -18,6 +18,9 @@
   "bugs": {
     "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
   },
+  "exports": {
+    "./package.json": "./package.json"
+  },
   "main": "dist/index.node",
   "files": [
     "dist"

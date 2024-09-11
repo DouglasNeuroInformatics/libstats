@@ -9,3 +9,5 @@ export declare function linearRegression(arr: [number, number][]): {
   slope: number;
   stdErr: number;
 };
+
+export declare function __getNativePackageName(): string;
