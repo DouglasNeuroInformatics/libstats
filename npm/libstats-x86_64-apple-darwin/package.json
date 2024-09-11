@@ -1,6 +1,6 @@
 {
   "name": "@douglasneuroinformatics/libstats-x86_64-apple-darwin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "This is the x86_64-apple-darwin binary for @douglasneuroinformatics/libstats",
   "os": [
     "darwin"
