@@ -19,6 +19,7 @@
     "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
   },
   "exports": {
+    ".": "./dist/index.node",
     "./package.json": "./package.json"
   },
   "main": "dist/index.node",
