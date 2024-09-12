@@ -82,6 +82,8 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
+      - name: Test
+        run: pnpm test
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -132,6 +134,8 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
