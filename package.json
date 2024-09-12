@@ -60,7 +60,6 @@
     ]
   },
   "napi": {
-    "name": "dist/index",
     "triples": {
       "defaults": false,
       "additional": [
