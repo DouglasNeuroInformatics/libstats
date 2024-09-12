@@ -27,21 +27,13 @@ jobs:
       contents: write
     runs-on: ${{ matrix.platform.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         platform:
           - os: 'ubuntu-22.04'
             target: 'x86_64-unknown-linux-musl'
           - os: 'ubuntu-22.04'
             target: 'aarch64-unknown-linux-musl'
-          - os: 'macos-latest'
-            target: 'x86_64-apple-darwin'
-          - os: 'macos-latest'
-            target: 'aarch64-apple-darwin'
-          - os: 'windows-2022'
-            target: 'x86_64-pc-windows-msvc'
-          - os: 'windows-2022'
-            target: 'aarch64-pc-windows-msvc'
     env:
       TARGET_PACKAGE_DIR: ${{ github.workspace }}/npm/${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
       TARGET_PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}-${{ matrix.platform.target }}
@@ -79,31 +71,4 @@ jobs:
         with:
           name: ${{ env.TARGET_PACKAGE_NAME }}
           path: ${{ env.TARGET_PACKAGE_NAME }}.tgz
-          if-no-files-found: 'error'
-  build-root:
-    needs: [configure, verify]
-    permissions:
-      contents: write
-    runs-on: 'ubuntu-22.04'
-    env:
-      PACKAGE_NAME: ${{ needs.configure.outputs.package_name }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/iron'
-          cache: 'pnpm'
-      - name: Install Node Dependencies
-        run: pnpm install
-      - name: 'Archive Package'
-        run: pnpm pack | grep '^.*\.tgz$' | sed 's/HUSKY=0 skip install//' | xargs -I {} mv "$GITHUB_WORKSPACE/{}" "$GITHUB_WORKSPACE/$PACKAGE_NAME.tgz"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.PACKAGE_NAME }}
-          path: ${{ env.PACKAGE_NAME }}.tgz
           if-no-files-found: 'error'
