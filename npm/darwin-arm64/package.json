@@ -1,0 +1,18 @@
+{
+  "name": "@douglasneuroinformatics/libstats-darwin-arm64",
+  "version": "0.0.8",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "libstats.darwin-arm64.node",
+  "files": [
+    "libstats.darwin-arm64.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  }
+}

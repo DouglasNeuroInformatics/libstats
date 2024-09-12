@@ -1,0 +1,21 @@
+{
+  "name": "@douglasneuroinformatics/libstats-linux-x64-musl",
+  "version": "0.0.8",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "libstats.linux-x64-musl.node",
+  "files": [
+    "libstats.linux-x64-musl.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  },
+  "libc": [
+    "musl"
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "@douglasneuroinformatics/libstats",
   "type": "module",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "packageManager": "pnpm@9.7.0",
   "description": "Basic statistics for Node.js, written in Rust",
   "license": "Apache-2.0",
@@ -15,20 +15,25 @@
   },
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
+      "types": "./index.d.ts",
+      "default": "./index.cjs"
     }
   },
   "files": [
-    "lib"
+    "index.cjs",
+    "index.d.ts"
   ],
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release --js index.cjs",
+    "clean": "rm -rf index.cjs index.d.ts dist",
+    "prepublishOnly": "napi prepublish -t npm",
     "prepare": "husky",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "version": "napi version"
   },
   "optionalDependencies": {
     "@douglasneuroinformatics/libstats-aarch64-apple-darwin": "0.0.7",
@@ -44,8 +49,8 @@
     "@douglasneuroinformatics/eslint-config": "^5.1.0",
     "@douglasneuroinformatics/prettier-config": "^0.0.1",
     "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "@napi-rs/cli": "^2.18.4",
     "@types/node": "20.x",
-    "cargo-cp-artifact": "^0.1.9",
     "eslint": "^9.9.1",
     "husky": "^9.0.11",
     "prettier": "^3.3.3",
@@ -56,6 +61,18 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "napi": {
+    "name": "libstats",
+    "triples": {
+      "additional": [
+        "aarch64-apple-darwin",
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc",
+        "x86_64-unknown-linux-musl"
+      ]
+    }
   },
   "pnpm": {
     "ignoredOptionalDependencies": [
