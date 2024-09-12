@@ -22,28 +22,31 @@ jobs:
       matrix:
         settings:
           # MACOS
-          - host: macos-13
+          - host: macos-latest
             target: x86_64-apple-darwin
             build: pnpm build --target x86_64-apple-darwin
-          - host: macos-14
+          - host: macos-latest
             target: aarch64-apple-darwin
             build: pnpm build --target aarch64-apple-darwin
+            test: true
           # # WINDOWS
-          # - host: windows-latest
-          #   target: x86_64-pc-windows-msvc
-          #   build: pnpm build --target x86_64-pc-windows-msvc
-          # - host: windows-latest
-          #   target: aarch64-pc-windows-msvc
-          #   build: pnpm build --target aarch64-pc-windows-msvc
+          - host: windows-latest
+            target: x86_64-pc-windows-msvc
+            build: pnpm build --target x86_64-pc-windows-msvc
+            test: true
+          - host: windows-latest
+            target: aarch64-pc-windows-msvc
+            build: pnpm build --target aarch64-pc-windows-msvc
           # # LINUX
-          # - host: ubuntu-latest
-          #   target: x86_64-unknown-linux-musl
-          #   docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-          #   build: pnpm build --target x86_64-unknown-linux-musl
-          # - host: ubuntu-latest
-          #   target: aarch64-unknown-linux-musl
-          #   docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-          #   build: set -e && rustup target add aarch64-unknown-linux-musl && pnpm build --target aarch64-unknown-linux-musl
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            build: pnpm build --target x86_64-unknown-linux-musl
+            test: true
+          - host: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+            build: set -e && rustup target add aarch64-unknown-linux-musl && pnpm build --target aarch64-unknown-linux-musl
     name: build - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -83,6 +86,7 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
       - name: Test
+        if: ${{ !matrix.settings.test }}
         run: pnpm test
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -90,36 +94,6 @@ jobs:
           name: bindings-${{ matrix.settings.target }}
           path: '*.node'
           if-no-files-found: error
-  test:
-    needs: [build]
-    name: test - ${{ matrix.settings.target }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        settings:
-          # - host: windows-latest
-          #   target: x86_64-pc-windows-msvc
-          #   architecture: x64
-          - host: macos-13
-            target: x86_64-apple-darwin
-            architecture: x64
-          - host: macos-14
-            target: aarch64-apple-darwin
-            architecture: arm64
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          architecture: ${{ matrix.settings.architecture }}
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: bindings-${{ matrix.settings.target }}
-          path: .
-      - name: List Packages
-        run: ls -R .
   publish:
     name: Publish
     runs-on: ubuntu-latest
