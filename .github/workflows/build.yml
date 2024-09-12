@@ -110,7 +110,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
           architecture: ${{ matrix.settings.architecture }}
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -133,8 +132,6 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-      - name: Install Dependencies
-        run: pnpm install
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
