@@ -26,7 +26,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "cargo-cp-artifact --npm cdylib ./dist/index.node -- cargo build --message-format=json-render-diagnostics",
+    "build": "napi build --release",
     "prepare": "husky",
     "test": "vitest --run"
   },
@@ -44,8 +44,8 @@
     "@douglasneuroinformatics/eslint-config": "^5.1.0",
     "@douglasneuroinformatics/prettier-config": "^0.0.1",
     "@douglasneuroinformatics/tsconfig": "^1.0.2",
+    "@napi-rs/cli": "^2.18.4",
     "@types/node": "20.x",
-    "cargo-cp-artifact": "^0.1.9",
     "eslint": "^9.9.1",
     "husky": "^9.0.11",
     "prettier": "^3.3.3",
@@ -56,6 +56,20 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "napi": {
+    "name": "dist/index",
+    "triples": {
+      "defaults": false,
+      "additional": [
+        "aarch64-apple-darwin",
+        "aarch64-unknown-linux-musl",
+        "aarch64-pc-windows-msvc",
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-musl"
+      ]
+    }
   },
   "pnpm": {
     "ignoredOptionalDependencies": [

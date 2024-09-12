@@ -3,10 +3,17 @@ name = "libstats"
 version = "0.0.0"
 license = "Apache-2.0"
 edition = "2021"
-exclude = ["dist/index.node"]
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-neon = "1"
+napi = { version = "2.12.2", default-features = false, features = ["napi9"] }
+napi-derive = "2.12.2"
+
+[build-dependencies]
+napi-build = "2.0.1"
+
+[profile.release]
+lto = true
+strip = "symbols"
