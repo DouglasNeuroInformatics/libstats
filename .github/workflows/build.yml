@@ -89,6 +89,7 @@ jobs:
           path: '*.node'
           if-no-files-found: error
   test:
+    needs: [build]
     name: test - ${{ matrix.settings.target }}
     runs-on: ubuntu-latest
     strategy:
@@ -108,16 +109,22 @@ jobs:
           - '18'
           - '20'
     steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
           architecture: ${{ matrix.settings.architecture }}
+      - name: Install Dependencies
+        run: pnpm install
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
           path: .
-      - name: List packages
+      - name: List Packages
         run: ls -R .
+      - name: Test Bindings
+        run: pnpm test
