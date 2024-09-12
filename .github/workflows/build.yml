@@ -4,6 +4,9 @@ on:
     branches:
       - dev
   workflow_dispatch:
+defaults:
+  run:
+    shell: bash
 env:
   CARGO_TERM_COLOR: always
   DEBUG: napi:*
@@ -80,7 +83,6 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
-        shell: bash
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
