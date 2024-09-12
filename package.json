@@ -20,13 +20,14 @@
     }
   },
   "files": [
-    "index.js",
+    "index.cjs",
     "index.d.ts"
   ],
   "engines": {
     "node": "20.x"
   },
   "scripts": {
+    "artifacts": "napi artifacts",
     "build": "napi build --platform --release --js index.cjs",
     "clean": "rm -rf index.js index.d.ts dist",
     "prepare": "husky",
