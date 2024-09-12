@@ -58,11 +58,6 @@
     ]
   },
   "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "eslint": "9.x"
-      }
-    },
     "ignoredOptionalDependencies": [
       "@douglasneuroinformatics/libstats-*"
     ],
