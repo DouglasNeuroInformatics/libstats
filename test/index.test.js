@@ -1,6 +1,11 @@
+import * as module from 'node:module';
+
 import { describe, expect, it } from 'vitest';
 
-import * as stats from '../lib/index.js';
+const require = module.createRequire(import.meta.url);
+
+/** @type {typeof import('../lib/index.js')} */
+const stats = require('../dist/index.node');
 
 describe('sum', () => {
   it('should return NaN for an empty array', () => {
