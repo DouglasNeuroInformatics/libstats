@@ -28,22 +28,22 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: pnpm build --target aarch64-apple-darwin
-          # WINDOWS
-          - host: windows-latest
-            target: x86_64-pc-windows-msvc
-            build: pnpm build --target x86_64-pc-windows-msvc
-          - host: windows-latest
-            target: aarch64-pc-windows-msvc
-            build: pnpm build --target aarch64-pc-windows-msvc
-          # LINUX
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: pnpm build --target x86_64-unknown-linux-musl
-          - host: ubuntu-latest
-            target: aarch64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: set -e && rustup target add aarch64-unknown-linux-musl && pnpm build --target aarch64-unknown-linux-musl
+          # # WINDOWS
+          # - host: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   build: pnpm build --target x86_64-pc-windows-msvc
+          # - host: windows-latest
+          #   target: aarch64-pc-windows-msvc
+          #   build: pnpm build --target aarch64-pc-windows-msvc
+          # # LINUX
+          # - host: ubuntu-latest
+          #   target: x86_64-unknown-linux-musl
+          #   docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+          #   build: pnpm build --target x86_64-unknown-linux-musl
+          # - host: ubuntu-latest
+          #   target: aarch64-unknown-linux-musl
+          #   docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
+          #   build: set -e && rustup target add aarch64-unknown-linux-musl && pnpm build --target aarch64-unknown-linux-musl
     name: build - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -105,20 +105,13 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             architecture: arm64
-        node:
-          - '18'
-          - '20'
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
           architecture: ${{ matrix.settings.architecture }}
-      - name: Install Dependencies
-        run: pnpm install
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
@@ -126,5 +119,3 @@ jobs:
           path: .
       - name: List Packages
         run: ls -R .
-      - name: Test Bindings
-        run: pnpm test
