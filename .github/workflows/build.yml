@@ -86,7 +86,7 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
       - name: Test
-        if: ${{ !matrix.settings.test }}
+        if: ${{ matrix.settings.test }}
         run: pnpm test
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -99,7 +99,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
-      - test
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
