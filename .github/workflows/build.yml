@@ -46,7 +46,7 @@ jobs:
               set -e &&
               rustup target add aarch64-unknown-linux-musl &&
               pnpm build --target aarch64-unknown-linux-musl
-    name: stable - ${{ matrix.settings.target }} - node@20
+    name: build - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
