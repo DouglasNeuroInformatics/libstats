@@ -15,18 +15,19 @@
   },
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
+      "types": "./index.d.ts",
+      "default": "./index.cjs"
     }
   },
   "files": [
-    "lib"
+    "index.js",
+    "index.d.ts"
   ],
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "build": "napi build --platform --release",
+    "build": "napi build --platform --release --js index.cjs",
     "clean": "rm -rf index.js index.d.ts dist",
     "prepare": "husky",
     "test": "vitest --run"
