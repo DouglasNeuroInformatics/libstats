@@ -1,3 +1,3 @@
-# `@douglasneuroinformatics/libstats-aarch64-apple-darwin`
+# `@douglasneuroinformatics/libstats-darwin-arm64`
 
 This is the **aarch64-apple-darwin** binary for `@douglasneuroinformatics/libstats`

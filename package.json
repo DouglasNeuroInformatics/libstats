@@ -26,7 +26,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "napi build --release",
+    "build": "napi build --platform --release",
+    "clean": "rm -rf index.js index.d.ts dist",
     "prepare": "husky",
     "test": "vitest --run"
   },
