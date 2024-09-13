@@ -35,14 +35,6 @@
     "test": "vitest --run",
     "version": "napi version"
   },
-  "optionalDependencies": {
-    "@douglasneuroinformatics/libstats-aarch64-apple-darwin": "0.0.7",
-    "@douglasneuroinformatics/libstats-aarch64-pc-windows-msvc": "0.0.7",
-    "@douglasneuroinformatics/libstats-aarch64-unknown-linux-musl": "0.0.7",
-    "@douglasneuroinformatics/libstats-x86_64-apple-darwin": "0.0.7",
-    "@douglasneuroinformatics/libstats-x86_64-pc-windows-msvc": "0.0.7",
-    "@douglasneuroinformatics/libstats-x86_64-unknown-linux-musl": "0.0.7"
-  },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
@@ -75,9 +67,6 @@
     }
   },
   "pnpm": {
-    "ignoredOptionalDependencies": [
-      "@douglasneuroinformatics/libstats-*"
-    ],
     "supportedArchitectures": {
       "os": [
         "darwin",
