@@ -11,9 +11,18 @@
   "files": [
     "libstats.linux-arm64-gnu.node"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git",
+    "directory": "npm/linux-arm64-gnu"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
   "engines": {
-    "node": ">= 10"
+    "node": "20.x"
   },
   "libc": [
     "glibc"

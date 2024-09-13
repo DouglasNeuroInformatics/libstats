@@ -11,7 +11,16 @@
   "files": [
     "libstats.darwin-x64.node"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/DouglasNeuroInformatics/libstats#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/libstats.git",
+    "directory": "npm/darwin-x64"
+  },
+  "bugs": {
+    "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
+  },
   "engines": {
     "node": "20.x"
   }
