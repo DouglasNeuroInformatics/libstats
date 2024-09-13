@@ -1,7 +1,7 @@
 {
   "name": "@douglasneuroinformatics/libstats",
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "packageManager": "pnpm@9.7.0",
   "description": "Basic statistics for Node.js, written in Rust",
   "license": "Apache-2.0",
@@ -30,7 +30,7 @@
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release --js index.cjs",
     "clean": "rm -rf index.cjs index.d.ts dist",
-    "prepublishOnly": "napi prepublish -t npm",
+    "prepublishOnly": "napi prepublish -t lerna",
     "prepare": "husky",
     "test": "vitest --run",
     "version": "napi version"

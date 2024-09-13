@@ -111,6 +111,7 @@ jobs:
     needs:
       - build
     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
@@ -138,6 +139,7 @@ jobs:
           ls -la
           ls -R ./npm
       - name: Publish
+        if: "${{ startsWith(github.event.head_commit.message, 'chore(release): publish') }}"
         run: |
           npm config set provenance true
           npm publish --access public
