@@ -10,8 +10,8 @@ if [[ ! $root_package_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 commit_file=$(mktemp)
-echo "chore(release): publish v${root_package_version}" >> $commit_file
-echo -e "\n" "- $root_package_name@$root_package_version" >> $commit_file
+echo -e "chore(release): publish v${root_package_version}\n" >> $commit_file
+echo "- $root_package_name@$root_package_version" >> $commit_file
 
 while read -r -d $'\0' filepath; do
   package_name=$(jq -r .name $filepath)
