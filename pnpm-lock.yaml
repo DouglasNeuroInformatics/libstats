@@ -2449,9 +2449,6 @@ packages:
       { integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g== }
     engines: { node: '>=12.20' }
 
-ignoredOptionalDependencies:
-  - '@douglasneuroinformatics/libstats-*'
-
 snapshots:
   '@astrojs/compiler@2.10.3': {}
 
