@@ -22,6 +22,6 @@
     "url": "https://github.com/DouglasNeuroInformatics/libstats/issues"
   },
   "engines": {
-    "node": "20.x"
+    "node": "20.x || 22.x"
   }
 }
